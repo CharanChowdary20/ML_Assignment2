@@ -17,18 +17,18 @@ st.set_page_config(page_title="BITS ML Assignment 2", layout="wide")
 st.title("📦 Product Success Classification Dashboard")
 st.markdown("### M.Tech (DSE) - Machine Learning Assignment 2")
 
-# --- SIDEBAR: DATA UPLOAD (Requirement 91) ---
+# --- SIDEBAR: DATA UPLOAD  ---
 st.sidebar.header("Step 1: Upload Data")
 uploaded_file = st.sidebar.file_uploader("Upload Test CSV", type="csv")
 
-# --- SIDEBAR: MODEL SELECTION (Requirement 92) ---
+# --- SIDEBAR: MODEL SELECTION  ---
 st.sidebar.header("Step 2: Select Model")
 model_choice = st.sidebar.selectbox(
     "Choose a Classification Model",
     ("Logistic Regression", "Decision Tree", "kNN", "Naive Bayes", "Random Forest", "XGBoost")
 )
 
-# Model Mapping to .pkl files saved in /model folder (Requirement 55)
+# Model Mapping to .pkl files saved in /model folder 
 model_map = {
     "Logistic Regression": "logistic.pkl",
     "Decision Tree": "decision_tree.pkl",
@@ -39,7 +39,7 @@ model_map = {
 }
 
 def preprocess_test_data(df):
-    """Encodes categorical data and defines features (Requirement 30)."""
+    """Encodes categorical data and defines features ( 30)."""
     data = df.copy()
     
     # Create target based on Success_Percentage
@@ -53,7 +53,7 @@ def preprocess_test_data(df):
         if col in data.columns:
             data[col] = le.fit_transform(data[col].astype(str))
             
-    # Required features (Minimum 12 features)
+    # Required features 
     features = ['Price', 'Rating', 'No_rating', 'Discount', 'M_Spend', 
                 'Supply_Chain_E', 'Sales_y', 'Sales_m', 'Market_T', 
                 'Seasonality_T', 'Category', 'Sub_category']
@@ -83,7 +83,7 @@ if uploaded_file is not None:
         y_pred = model.predict(X_test_scaled)
         y_prob = model.predict_proba(X_test_scaled)[:, 1] if hasattr(model, "predict_proba") else y_pred
         
-        # --- REQUIREMENT (c): METRICS DISPLAY (Requirement 93) ---
+        # ---  (c): METRICS DISPLAY ---
         st.subheader(f"📊 Evaluation Metrics: {model_choice}") # FIXED LINE
         if y_true is not None:
             c1, c2, c3, c4, c5, c6 = st.columns(6)
@@ -94,7 +94,7 @@ if uploaded_file is not None:
             c5.metric("F1 Score", f"{f1_score(y_true, y_pred):.3f}")
             c6.metric("MCC Score", f"{matthews_corrcoef(y_true, y_pred):.3f}")
             
-            # --- REQUIREMENT (d): CONFUSION MATRIX (Requirement 94) ---
+            # ---  (d): CONFUSION MATRIX  ---
             st.divider()
             left, right = st.columns(2)
             
